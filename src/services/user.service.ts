@@ -1,10 +1,13 @@
+import { serverConfig } from "../config";
 import { IUser } from "../models/user.model";
 import { IUserRepository } from "../repositories/user.repository";
-import { BadRequestError } from "../utils/errors/app.error";
-import { CreateUserDTO } from "../validators/user.validator";
+import { BadRequestError, NotFoundError } from "../utils/errors/app.error";
+import { CreateUserDTO, SigninUserDTO } from "../validators/user.validator";
+import jwt from 'jsonwebtoken';
 
 export interface IUserService {
   createUser(data: CreateUserDTO): Promise<IUser>;
+  signinUser(data: SigninUserDTO): Promise<string>;
 }
 
 export class UserService implements IUserService {
@@ -22,6 +25,23 @@ export class UserService implements IUserService {
 
     const user = await this.userRepository.createUser(data);
     return user;
+  }
+
+  async signinUser(data: SigninUserDTO): Promise<string> {
+    // Implementation for user sign-in and JWT token generation goes here
+    const user = await this.userRepository.findByEmail(data.email);
+    if (!user) {
+      throw new NotFoundError(`User not found with email: ${data.email}`);
+    }
+    // Validate password (omitted for brevity)
+    const isPasswordValid = await (user as any).comparePassword(data.password);
+    if (!isPasswordValid) {
+      throw new BadRequestError("Invalid password");
+    }
+    // Generate JWT token (omitted for brevity)
+    const tokenPayload = { id: user._id, email: user.email, role: user.role };
+    const token = jwt.sign(tokenPayload, serverConfig.JWT_SECRET, { expiresIn: '1h' });
+    return token;
   }
 
 }

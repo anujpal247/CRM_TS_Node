@@ -15,5 +15,15 @@ export const UserController = {
       data: user,
       message: "User created successfully"
     })
+  },
+
+  signinUser: async (req: Request, res: Response): Promise<void> => {
+    const token = await userService.signinUser(req.body);
+
+    res.status(200).json({
+      success: true,
+      data: { token },
+      message: "User signed in successfully"
+    });
   }
 }

@@ -8,3 +8,10 @@ export const createUserSchema = z.object({
 })
 
 export type CreateUserDTO = z.infer<typeof createUserSchema>;
+
+export const signinUserSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+})
+
+export type SigninUserDTO = z.infer<typeof signinUserSchema>;
