@@ -10,6 +10,9 @@ export interface IUserRepository {
 
 export class UserRepository implements IUserRepository {
   async createUser(data: IUser): Promise<IUser> {
+    
+    data.role = data.role || ['user'];
+
     const user = await User.create(data);
     user.password = ""; // Hide password
     return user;
@@ -29,5 +32,5 @@ export class UserRepository implements IUserRepository {
     const users = await User.find().select("-password");
     return users;
   }
-  
+
 }

@@ -5,7 +5,7 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  role: UserRole;
+  role: UserRole[];
 }
 
 enum UserRole {
@@ -30,10 +30,10 @@ const UserSchema = new mongoose.Schema<IUser>({
     required: [true, 'Password is required'],
   },
   role: {
-    type: String,
+    type: [String],
     enum: Object.values(UserRole),
-    default: UserRole.USER,
-  }
+    default: [UserRole.USER],
+  },
 }, {
   timestamps: true,
 });
