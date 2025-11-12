@@ -25,5 +25,17 @@ export const UserController = {
       data: { token },
       message: "User signed in successfully"
     });
+  },
+
+  getUserProfile: async (req: Request, res: Response): Promise<void> => {
+    const userId = (req as any).user.id;
+    
+    const user = await userService.getUserProfile(userId);
+
+    res.status(200).json({
+      success: true,
+      data: user,
+      message: "User profile fetched successfully"
+    });
   }
 }

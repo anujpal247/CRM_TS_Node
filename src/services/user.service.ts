@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken';
 export interface IUserService {
   createUser(data: CreateUserDTO): Promise<IUser>;
   signinUser(data: SigninUserDTO): Promise<string>;
+  getUserProfile(id: string): Promise<IUser | null>;
 }
 
 export class UserService implements IUserService {
@@ -42,6 +43,15 @@ export class UserService implements IUserService {
     const tokenPayload = { id: user._id, email: user.email, role: user.role };
     const token = jwt.sign(tokenPayload, serverConfig.JWT_SECRET, { expiresIn: '1h' });
     return token;
+  }
+
+  async getUserProfile(id: string): Promise<IUser | null> {
+  
+    const user = await this.userRepository.findById(id);
+    if (!user) {
+      throw new NotFoundError(`User not found with id: ${id}`);
+    }
+    return user;
   }
 
 }
