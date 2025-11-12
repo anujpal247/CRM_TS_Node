@@ -5,6 +5,7 @@ export interface IUserRepository {
   createUser(data: CreateUserDTO): Promise<IUser>;
   findByEmail(email: string): Promise<IUser | null>;
   findById(id: string): Promise<IUser | null>;
+  getAllUsers(): Promise<IUser[]>;
 }
 
 export class UserRepository implements IUserRepository {
@@ -23,4 +24,10 @@ export class UserRepository implements IUserRepository {
     const user = await User.findById(id).select("-password");
     return user;
   }
+
+  async getAllUsers(): Promise<IUser[]> {
+    const users = await User.find().select("-password");
+    return users;
+  }
+  
 }

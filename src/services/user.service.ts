@@ -9,6 +9,7 @@ export interface IUserService {
   createUser(data: CreateUserDTO): Promise<IUser>;
   signinUser(data: SigninUserDTO): Promise<string>;
   getUserProfile(id: string): Promise<IUser | null>;
+  getAllUsers(): Promise<IUser[]>;
 }
 
 export class UserService implements IUserService {
@@ -54,4 +55,8 @@ export class UserService implements IUserService {
     return user;
   }
 
+  async getAllUsers(): Promise<IUser[]> {
+    const users = await this.userRepository.getAllUsers();
+    return users;
+  }
 }

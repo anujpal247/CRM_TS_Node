@@ -18,6 +18,7 @@ userRouter.post('/signin',
 );
 
 userRouter.get('/profile', isAuthenticated, UserController.getUserProfile)
+userRouter.get('/', UserController.getAllUsers);
 
 
 export default userRouter;

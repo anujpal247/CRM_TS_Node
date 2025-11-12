@@ -37,5 +37,15 @@ export const UserController = {
       data: user,
       message: "User profile fetched successfully"
     });
+  },
+
+  getAllUsers: async (req: Request, res: Response): Promise<void> => {
+    const users = await userService.getAllUsers();
+
+    res.status(200).json({
+      success: true,
+      data: users,
+      message: "All users fetched successfully"
+    });
   }
 }
