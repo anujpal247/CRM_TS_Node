@@ -1,9 +1,10 @@
 import Ticket, { ITicket } from "../models/ticket.model";
+import { CreateTicketDTO } from "../validators/ticket.validator";
 
 
 export interface ITicketRepository {
   // Define ticket repository methods here
-  create(data: Partial<ITicket>): Promise<ITicket>;
+  create(data: CreateTicketDTO): Promise<ITicket>;
   get(id: string): Promise<ITicket | null>;
   getAll(): Promise<ITicket[]>;
   update(id: string, data: Partial<ITicket>): Promise<ITicket | null>;
@@ -11,7 +12,7 @@ export interface ITicketRepository {
 }
 
 export class TicketRepository implements ITicketRepository {
-  async create(data: Partial<ITicket>): Promise<ITicket> {
+  async create(data: CreateTicketDTO): Promise<ITicket> {
     const ticket = await Ticket.create(data);
     return ticket;
   }
